@@ -300,12 +300,28 @@ function updateStats() {
 function addTask({ title, subject, due, priority }) {
   const t = clampTitle(title);
   if (!t) return;
+  const normalizedSubject = clampSubject(subject);
+  const normalizedDue = due ? String(due) : null;
+
+  // Prevent accidental duplicate active tasks with same title/subject/due.
+  const duplicate = state.tasks.some(
+    (x) =>
+      !x.completed &&
+      x.title.toLowerCase() === t.toLowerCase() &&
+      x.subject.toLowerCase() === normalizedSubject.toLowerCase() &&
+      (x.due ?? null) === normalizedDue
+  );
+  if (duplicate) {
+    alert("That task already exists in your active list.");
+    return;
+  }
+
   /** @type {Task} */
   const task = {
     id: uid(),
     title: t,
-    subject: clampSubject(subject),
-    due: due ? String(due) : null,
+    subject: normalizedSubject,
+    due: normalizedDue,
     priority: normalizePriority(priority),
     completed: false,
     createdAt: Date.now(),

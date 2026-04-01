@@ -11,6 +11,7 @@ A simple student-focused to‑do list you can run without installing anything.
 - Edit tasks (click the title or the Edit button)
 - Auto-saves to **localStorage**
 - Import / Export as JSON
+- Prevents duplicate active tasks (same task + subject + date)
 
 ## Code review
 
