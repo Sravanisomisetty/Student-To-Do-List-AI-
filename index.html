@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Student To‑Do List</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="bg"></div>
+    <main class="shell">
+      <header class="top">
+        <div class="brand">
+          <div class="logo" aria-hidden="true">ST</div>
+          <div>
+            <div class="title">Student To‑Do List</div>
+            <div class="subtitle">Plan homework, deadlines, and habits.</div>
+          </div>
+        </div>
+
+        <div class="stats" aria-live="polite">
+          <div class="stat">
+            <div class="stat-label">Left</div>
+            <div class="stat-value" id="statLeft">0</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Done</div>
+            <div class="stat-value" id="statDone">0</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Today</div>
+            <div class="stat-value" id="statToday">0</div>
+          </div>
+        </div>
+      </header>
+
+      <section class="card" aria-label="Add a task">
+        <form id="addForm" class="add" autocomplete="off">
+          <div class="field">
+            <label class="label" for="taskTitle">Task</label>
+            <input
+              id="taskTitle"
+              name="title"
+              class="input"
+              type="text"
+              placeholder="e.g., Finish math worksheet"
+              maxlength="120"
+              required
+            />
+          </div>
+
+          <div class="row">
+            <div class="field">
+              <label class="label" for="taskSubject">Subject (optional)</label>
+              <input
+                id="taskSubject"
+                name="subject"
+                class="input"
+                type="text"
+                placeholder="e.g., Math"
+                maxlength="24"
+              />
+            </div>
+
+            <div class="field">
+              <label class="label" for="taskDue">Due date</label>
+              <input id="taskDue" name="due" class="input" type="date" />
+            </div>
+
+            <div class="field">
+              <label class="label" for="taskPriority">Priority</label>
+              <select id="taskPriority" name="priority" class="input select">
+                <option value="medium" selected>Medium</option>
+                <option value="high">High</option>
+                <option value="low">Low</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button type="submit" class="btn primary">Add task</button>
+            <button type="button" id="seedBtn" class="btn ghost" title="Add sample tasks">
+              Try sample
+            </button>
+            <div class="hint" id="saveHint">Saved locally in your browser.</div>
+          </div>
+        </form>
+      </section>
+
+      <section class="card" aria-label="Task controls">
+        <div class="controls">
+          <div class="tabs" role="tablist" aria-label="Filter tasks">
+            <button class="tab is-active" data-filter="all" role="tab" aria-selected="true">
+              All
+            </button>
+            <button class="tab" data-filter="active" role="tab" aria-selected="false">
+              Active
+            </button>
+            <button class="tab" data-filter="today" role="tab" aria-selected="false">
+              Due today
+            </button>
+            <button class="tab" data-filter="done" role="tab" aria-selected="false">
+              Completed
+            </button>
+          </div>
+
+          <div class="rightControls">
+            <label class="srOnly" for="searchBox">Search tasks</label>
+            <input
+              id="searchBox"
+              class="input search"
+              type="search"
+              placeholder="Search…"
+            />
+            <button id="clearCompletedBtn" class="btn ghost danger">Clear completed</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="card list" aria-label="Tasks">
+        <ul id="taskList" class="taskList" aria-live="polite"></ul>
+        <div id="emptyState" class="empty" hidden>
+          <div class="emptyTitle">Nothing here yet.</div>
+          <div class="emptyText">Add a task above, or click “Try sample”.</div>
+        </div>
+      </section>
+
+      <footer class="foot">
+        <div>Tip: click a task title to edit it.</div>
+        <div class="footRight">
+          <button id="exportBtn" class="btn ghost">Export JSON</button>
+          <label class="btn ghost fileBtn">
+            Import JSON
+            <input id="importInput" type="file" accept="application/json" />
+          </label>
+        </div>
+      </footer>
+    </main>
+
+    <dialog id="editDialog" class="dialog">
+      <form method="dialog" id="editForm" class="dialogInner">
+        <div class="dialogTop">
+          <div class="dialogTitle">Edit task</div>
+          <button class="iconBtn" value="cancel" aria-label="Close">✕</button>
+        </div>
+
+        <div class="field">
+          <label class="label" for="editTitle">Task</label>
+          <input id="editTitle" name="title" class="input" maxlength="120" required />
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label class="label" for="editSubject">Subject</label>
+            <input id="editSubject" name="subject" class="input" maxlength="24" />
+          </div>
+          <div class="field">
+            <label class="label" for="editDue">Due date</label>
+            <input id="editDue" name="due" class="input" type="date" />
+          </div>
+          <div class="field">
+            <label class="label" for="editPriority">Priority</label>
+            <select id="editPriority" name="priority" class="input select">
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+              <option value="low">Low</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="dialogActions">
+          <button class="btn primary" value="save">Save</button>
+          <button class="btn ghost" value="cancel">Cancel</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="./app.js" defer></script>
+  </body>
+</html>
