@@ -12,6 +12,10 @@ A simple student-focused to‑do list you can run without installing anything.
 - Auto-saves to **localStorage**
 - Import / Export as JSON
 
+## Code review
+
+This repo is set up to get **CodeRabbit** reviews on Pull Requests.
+
 ## Run it
 
 ### Option A: Open directly
